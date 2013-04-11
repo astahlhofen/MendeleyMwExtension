@@ -1,0 +1,61 @@
+span.folder-section {
+	cursor: pointer;
+}
+
+.loading-style {
+	padding-top: 10px;
+	padding-left: 10px;
+	padding-bottom: 10px;
+	font-size: 14px;
+}
+
+a.button {
+	-moz-box-shadow: inset 0px 0px 0px -3px #bbdaf7;
+	-webkit-box-shadow: inset 0px 0px 0px -3px #bbdaf7;
+	box-shadow: inset 0px 0px 0px -3px #bbdaf7;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #79bbff
+		), color-stop(1, #378de5) );
+	background: -moz-linear-gradient(center top, #79bbff 5%, #378de5 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#79bbff',
+		endColorstr='#378de5' );
+	background-color: #79bbff;
+	-moz-border-radius: 13px;
+	-webkit-border-radius: 13px;
+	border-radius: 13px;
+	border: 2px solid #84bbf3;
+	display: inline-block;
+	color: #ffffff;
+	font-family: arial;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 6px 10px;
+	text-decoration: none;
+	text-shadow: 2px -2px 0px #528ecc;
+}
+
+a.button:active {
+	background-image: -moz-linear-gradient(center top, #378de5 5%, #79bbff 100%);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #378de5
+		), color-stop(1, #79bbff) );
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#378de5',
+		endColorstr='#79bbff' );
+	-ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#378de5',
+		endColorstr='#79bbff' );
+		text-shadow: -2px 2px 0px #528ecc;
+	/* 	margin-top: 1px; */
+}
+
+a.button.icon {
+	padding-left: 11px;
+}
+
+a.button.icon span {
+	padding-right: 25px;
+}
+
+a.button.icon.delete span {
+	background: url(../img/delete-icon.png) no-repeat 0px 0px;
+	background-size: 18px 18px;
+	background-position: right;
+	padding-top: 3px;
+}
