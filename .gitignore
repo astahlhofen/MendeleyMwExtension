@@ -1,0 +1,7 @@
+.DS_STORE
+.project
+.settings
+.buildpath
+.cache
+access_token*
+*.sql
