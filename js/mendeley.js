@@ -1,4 +1,4 @@
-//var closeTime = setInterval( function() { closeWindow(); } ,3000 );
+var closeTime = setInterval( function() { closeWindow(); } ,1500 );
 var windowHandle;
 
 function openInMendeley( link ) 

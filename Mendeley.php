@@ -38,6 +38,7 @@ $wgSpecialPageGroups[ 'Mendeley' ] = 'wiki';
 
 $wgExtensionFunctions[ ] = 'wfMendeleyFunctions';
 
+$wgHooks[ 'ParserAfterTidy' ][ ] = 'addJavascript';
 $wgHooks[ 'ParserAfterTidy' ][ ] = 'restoreDivTags';
 $wgHooks[ 'ParserAfterTidy' ][ ] = 'tidyWikiCiteKeys';
 
@@ -85,7 +86,7 @@ include_once 'Utils.php';
 # Definitions. #
 ################
 
-define( 'MENDELEY_MENDELEY_IS_DEBUG', false );
+define( 'MENDELEY_IS_DEBUG', false );
 
 define( 'MENDELEY_NAMESPACE', 'mendeley' );
 
@@ -124,6 +125,13 @@ function restoreDivTags( &$parser, &$text ) {
 	return true;
 }
 
+
+function addJavascript( &$parser, &$text ) {
+	global $wgScriptPath;
+	$text = '<script type="text/javascript" src="' . $wgScriptPath .
+	 			'/extensions/MendeleyMwExtension/js/mendeley.js"></script>' . $text;
+	return true;
+}
 
 /**
  * Checks, if the mendeley class instance is already initialized for the current wiki page. This functio must be called in
@@ -275,7 +283,6 @@ class Mendeley {
 
 	private $bibtexEntry;
 
-	private $isInitialization = true;
 
 	public function __construct() {
 		// Initialize array with collected references.
@@ -362,12 +369,6 @@ class Mendeley {
 		global $wgScriptPath;
 
 		$output = '';
-		if ( $this->isInitialization ) {
-			$this->isInitialization = false;
-			$output .= '<script language="javascript" src="' . $wgScriptPath .
-			'/extensions/Mendeley/js/mendeley.js"></script>';
-		}
-
 		$parser->disableCache();
 		$this->getReferencesBlock( $args, $output );
 		return $output;
@@ -378,7 +379,7 @@ class Mendeley {
 			return '';
 		}
 
-		$refset = $options[ MENDELEY_OPT_REFSET ];
+		$refset = (array_key_exists(MENDELEY_OPT_REFSET, $options )) ? $options[ MENDELEY_OPT_REFSET ] : null;
 		$referenceBlock = array();
 
 		// Check if the refset option is specified.
@@ -426,10 +427,10 @@ class Mendeley {
 	}
 
 	private function getRef( $options ) {
-		$id = $options[ MENDELEY_OPT_ID ];
-		$refset = $options[ MENDELEY_OPT_REFSET ];
-		$mendeleyId = $options[ MENDELEY_OPT_MENDELEY_DOC_ID ];
-		$mediawikiId = $options[ MENDELEY_OPT_MW_ID ];
+		$id = ( array_key_exists( MENDELEY_OPT_ID, $options ) ) ? $options[ MENDELEY_OPT_ID ] : null;
+		$refset = ( array_key_exists( MENDELEY_OPT_REFSET, $options ) ) ? $options[ MENDELEY_OPT_REFSET ] : null;
+		$mendeleyId = ( array_key_exists( MENDELEY_OPT_MENDELEY_DOC_ID, $options ) ) ? $options[ MENDELEY_OPT_MENDELEY_DOC_ID ] : null;
+		$mediawikiId = ( array_key_exists( MENDELEY_OPT_MW_ID, $options ) ) ? $options[ MENDELEY_OPT_MW_ID ] : null;
 
 		if ( isset( $mendeleyId ) ) {
 		} else if ( isset( $mediawikiId ) ) {
@@ -472,7 +473,7 @@ class Mendeley {
 			$collectedReferences = &$this->arrCollectedRefs[ $this->defaultRefSet ];
 		}
 
-		$ref = $collectedReferences[ $mendeleyId ];
+		$ref =  ( array_key_exists( $mendeleyId, $collectedReferences ) ) ? $collectedReferences[ $mendeleyId ] : null;
 		if ( !isset( $ref ) ) {
 			$ref = array(
 					MENDELEY_ARR_CITEKEY_ID => $this->citecounter,
@@ -501,14 +502,14 @@ class Mendeley {
 	}
 
 	private function renderMendeleyFolder( $options ) {
-		if ( !isset( $options[ MENDELEY_OPT_NAME ] ) ) {
+		if ( !array_key_exists( MENDELEY_OPT_NAME, $options ) ) {
 			return "You must specify at least a foldername with parameter \"" . MENDELEY_OPT_NAME .
 			"=<folder_name>\"" . "to use function \"" . MENDELEY_NAMESPACE . ":" . MENDELEY_FUNC_FOLDER .
 			"\".";
 		}
 
-		$folderName = $options[ MENDELEY_OPT_NAME ];
-		$header = $option[ MENDELEY_OPT_HEADER ];
+		$folderName = array_key_exists( MENDELEY_OPT_NAME, $options ) ? $options[ MENDELEY_OPT_NAME ] : null;
+		$header = array_key_exists( MENDELEY_OPT_HEADER, $options ) ? $option[ MENDELEY_OPT_HEADER ] : null;
 
 		$output = '';
 		$documentList = $this->getMendeleyDocumentList( $output, $options );
