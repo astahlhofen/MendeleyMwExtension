@@ -4,7 +4,7 @@
 if ( !defined( 'MEDIAWIKI' ) ) {
 	echo <<< EOT
 To install my extension, put the following line in LocalSettings.php:
-require_once( "\$IP/extensions/Mendeley/Mendeley.php" );
+require_once( "\$IP/extensions/MendeleyMwExtension/Mendeley.php" );
 EOT;
 	exit( 1);
 }
@@ -128,6 +128,7 @@ function restoreDivTags( &$parser, &$text ) {
 
 function addJavascript( &$parser, &$text ) {
 	global $wgScriptPath;
+	var_dump( $wgScriptPath );
 	$text = '<script type="text/javascript" src="' . $wgScriptPath .
 	 			'/extensions/MendeleyMwExtension/js/mendeley.js"></script>' . $text;
 	return true;

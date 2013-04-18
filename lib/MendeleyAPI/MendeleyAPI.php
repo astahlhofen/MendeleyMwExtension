@@ -452,7 +452,7 @@ class MendeleyCache {
 	 * 	is added to the cache files, can be used to cache tokens for multiple consumer
 	 */
 	public function __construct($suffix = '') {
-		$this->dir = dirname(__FILE__) . '/cache/';
+		$this->dir = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR;
 		$this->suffix = $suffix;
 	}
 
@@ -488,14 +488,13 @@ class MendeleyCache {
 		$success = true;
 		$parts = explode(DIRECTORY_SEPARATOR, $dir);
 		$file = array_pop($parts);
-		$dir = '';
-		foreach($parts as $part) {
-			if(!is_dir($dir .= '/' . $part)) {
-				$success = mkdir($dir) && $success;
-			}
-		}
+		$dir = str_replace( DIRECTORY_SEPARATOR . $file, "", $dir);
 
-		$success = file_put_contents($dir . '/' . $file, $contents) && $success;
+		if ( !file_exists( $dir) ) {
+			mkdir( $dir );
+		}
+		
+		$success = file_put_contents($dir . DIRECTORY_SEPARATOR . $file, $contents) && $success;
 
 		return $success;
 	}
